@@ -12,7 +12,7 @@ const schema = new Schema(
 );
 
 schema.pre(/^find/, function () {
-    this.populate("user_id", "email avatar").populate("product_id", "title price stock");
+    this.populate("user_id", "email avatar").populate("product_id", "title price image");
 });
 
 const Cart = model(collection, schema);

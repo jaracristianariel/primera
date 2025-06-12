@@ -3,10 +3,11 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import { createHash, compareHash } from "../helpers/hash.helper.js";
-import { usersManager } from "../data/managers/mongo/manager.mongo.js";
+import { usersRepository } from "../repositories/repository.js";
 import { createToken } from "../helpers/token.hepler.js";
+import verifyEmail from "../helpers/verifyEmail.helper.js";
 
-const callbackURL = "http://localhost:8080/api/auth/google/redirect"
+const callbackURL = "http://localhost:8000/api/auth/google/redirect"
 
 passport.use(
     //nombre de la estrategia de autenticacion/autorizacion
@@ -23,12 +24,13 @@ passport.use(
                     error.statusCode = 400;
                     throw error;
                 }
-                let user = await usersManager.readBy({ email })
+                let user = await usersRepository.readBy({ email })
                 if (user) {
                     done(null, null, { message:"invalid credential", statusCode: 401 })
                 }
-                req.body.password = createHash(password)
-                user = await usersManager.createOne(req.body)
+                //req.body.password = createHash(password)
+                user = await usersRepository.createOne(req.body);
+                await verifyEmail(user.email, user.verifyCode)
                 //el 1er parametro de done es el error (si ocurre) y el 2do parametro son los datos del usuario 
                 // que se guardan en el objeto de requerimiento, es decir que a partir de que se aplica este middelware
                 //existe req.user con los datos del usuario
@@ -45,13 +47,17 @@ passport.use(
         { passReqToCallback: true, usernameField: "email" },
         async (req, email, password, done) => {
             try {
-                let user = await usersManager.readBy({ email })
+                let user = await usersRepository.readBy({ email })
                 if (!user) {
                     done(null, null, { message:"invalid credential", statusCode: 401 })
                 }
                 const verifyPass = compareHash(password, user.password)
                 if (!verifyPass) {
                     done(null, null, { message:"invalid credential", statusCode: 401 })
+                }
+                const { isVerified } = user;
+                if (!isVerified) {
+                    return done(null, null, { message: "please verify your account!", statusCode: 401 })
                 }
                 const data = {
                     user_id: user._id,
@@ -77,7 +83,7 @@ passport.use(
         async (data, done) => {
             try {
                 const { user_id, email, role } = data
-                const user = await usersManager.readBy({ _id: user_id, email, role })
+                const user = await usersRepository.readBy({ _id: user_id, email, role })
                 if (!user) {
                     done(null, null, { message:"Forbidden", statusCode: 403 })
                 }
@@ -95,7 +101,7 @@ passport.use(
         async (data, done) => {
             try {
                 const { user_id, email, role } = data
-                const user = await usersManager.readBy({ _id: user_id, email, role })
+                const user = await usersRepository.readBy({ _id: user_id, email, role })
                 if (!user || user.role !== "ADMIN") {
                     done(null, null, { message:"Forbidden", statusCode: 403 })
                 }
@@ -114,7 +120,7 @@ passport.use(
             try {
                 console.log(profile);
                 const { email, name, picture, id } = profile
-                let user = await usersManager.readBy({ email: id })
+                let user = await usersRepository.readBy({ email: id })
                 if (!user) {
                     user = {
                         email: id,
@@ -123,7 +129,7 @@ passport.use(
                         password: createHash(email),
                         city: "Google"
                     }
-                    user = await usersManager.createOne(user)
+                    user = await usersRepository.createOne(user)
                 }
                 const data = {
                     user_id: user._id,
@@ -150,7 +156,7 @@ passport.use(
         async (data, done) => {
             try {
                 const { user_id, email, role, city, name } = data
-                const user = await usersManager.readBy({ _id: user_id, email, role, city, name })
+                const user = await usersRepository.readBy({ _id: user_id, email, role, city, name })
                 if (!user) {
                     done(null, null, { message:"Forbidden", statusCode: 403 })
                 }

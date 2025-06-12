@@ -1,4 +1,4 @@
-import "dotenv/config.js";
+import "./src/helpers/env.helper.js";
 import express from "express";
 import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
@@ -6,7 +6,8 @@ import morgan from "morgan";
 import indexRouter from "./src/routers/index.router.js";
 import pathHandler from "./src/middlewares/pathHandler.mid.js";
 import errorHandler from "./src/middlewares/errorHandler.mid.js";
-import dbConnect from "./src/helpers/dbConnect.helper.js";
+//import dbConnect from "./src/helpers/dbConnect.helper.js";
+import argvsHelper from "./src/helpers/argvs.helper.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -15,8 +16,8 @@ import MongoStore from "connect-mongo";
 const server = express();
 const port = process.env.PORT || 8080;
 const ready = async () => {
-    console.log("server ready on port " + port);
-    await dbConnect(process.env.LINK_DB)
+    console.log("server ready on port " + port + " and mode " + argvsHelper.mode);
+    //await dbConnect(process.env.LINK_DB)
 }
 server.listen(port, ready)
 
@@ -48,3 +49,4 @@ server.use(session({
 server.use("/", indexRouter);
 server.use(errorHandler);
 server.use(pathHandler);
+//console.log(process)

@@ -1,0 +1,30 @@
+<main class="container mt-4">
+    <h1 class="bg-success-subtle p-2 text-center text-success w-100">MI CARRITO</h1>
+    <div class="row">
+        {{#if cartItems.length}}
+        {{#each cartItems}}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{this.product_id.image}}" class="card-img-top" alt="{{this.product_id.title}}">
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{this.product_id.title}}</h5>
+                    <p class="card-text text-center">Precio: ${{this.product_id.price}}</p>
+                    <p class="card-text text-center">Cantidad: {{this.quantity}}</p>
+                    <button class="btn bg-success-subtle remove-from-cart w-100" data-item-id="{{this._id}}">Eliminar</button>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+        <div class="text-center mt-4">
+            <h4>Total: ${{total}}</h4>
+            <button class="btn btn-success" id="checkout">Finalizar Compra</button>
+        </div>
+        {{else}}
+        <div class="col-12">
+            <p class="text-center">El carrito está vacío</p>
+        </div>
+        {{/if}}
+    </div>
+</main>
+
+<script src="/scripts/cart.js"></script>

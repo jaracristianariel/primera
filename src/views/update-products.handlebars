@@ -1,0 +1,22 @@
+<h1 class="bg-success-subtle p-2 text-center text-success w-100">UPDATE PRODUCTS</h1>
+
+<section class="d-flex flex-wrap justify-content-center">
+    {{#each products}}
+    <div class="card m-2" style="width: 20rem;">
+        <img src="{{this.image}}" class="card-img-top object-fit-cover" style="height: 10rem;" alt="{{this._id}}">
+        <div class="card-body">
+            <form class="update-form" data-id="{{this._id}}">
+                <input type="text" class="form-control mb-2" name="title" value="{{this.title}}" />
+                <input type="text" class="form-control mb-2" name="description" value="{{this.description}}" />
+                <input type="text" class="form-control mb-2" name="category" value="{{this.category}}" />
+                <input type="number" class="form-control mb-2" name="price" value="{{this.price}}" step="0.01" />
+                <p class="card-text text-center">stock</p>
+                <input type="number" class="form-control mb-2" name="stock" value="{{this.stock}}" />
+                <button type="submit" class="btn btn-success w-100">Update</button>
+            </form>
+        </div>
+    </div>
+    {{/each}}
+</section>
+
+<script src="/scripts/updateProducts.js"></script>

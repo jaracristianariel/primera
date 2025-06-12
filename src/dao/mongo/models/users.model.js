@@ -10,6 +10,8 @@ const schema = new Schema(
         password: { type: String, required: true },
         avatar: { type: String, default: "https://gravatar.com/avatar/248bdefecfb4664b5b2e8335c61a66f5?s=400&d=robohash&r=x" },
         role: { type: String, default: "USER", enum: ["USER", "ADMIN", "PREM"], index: true },
+        isVerified: { type: Boolean, default: false },
+        verifyCode: { type: String }
     },
     { timestamps: true}
 );

@@ -1,0 +1,18 @@
+<main class="d-flex flex-column align-items-center w-100 flex-grow-1">
+    <h1 class="bg-success-subtle p-2 text-center text-success w-100">ADD PRODUCT FORM</h1>
+    <form class="m-3 d-flex flex-column justify-content-evenly flex-wrap align-items-center" style="width: 380px;">
+        <input class="m-2 p-2 text-center w-100" type="text" name="title" id="title" placeholder="TITLE" required />
+        <input class="m-2 p-2 text-center w-100" type="text" name="description" id="description"placeholder="DESCRIPTION" />
+        <input class="m-2 p-2 text-center w-100" type="text" name="category" id="category" placeholder="CATEGORY" />
+        <input class="m-2 p-2 text-center w-100" type="text" name="image" id="image" placeholder="IMAGE URL" />
+        <input class="m-2 p-2 text-center w-100" type="number" name="price" id="price" placeholder="PRICE"step="0.01" />
+        <input class="m-2 p-2 text-center w-100" type="number" name="stock" id="stock" placeholder="STOCK" />
+        {{!-- <div class="form-check m-2">
+            <input class="form-check-input" type="checkbox" id="onsale">
+            <label class="form-check-label" for="onsale">On Sale</label>
+        </div> --}}
+        <input class="m-2 p-2 text-center btn btn-success w-100" type="button" id="addProduct" value="ADD PRODUCT" />
+    </form>
+</main>
+
+<script src="/scripts/addProduct.js"></script>

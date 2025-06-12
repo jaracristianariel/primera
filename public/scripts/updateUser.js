@@ -1,4 +1,4 @@
-document.querySelector("#register").addEventListener("click", async () => {
+document.querySelector("#update").addEventListener("click", async () => {
     try {
         const data = {};
         const name = document.querySelector("#name").value;
@@ -25,11 +25,10 @@ document.querySelector("#register").addEventListener("click", async () => {
         const url = "/api/users";
         let response = await fetch(url, opts);
         response = await response.json();
-        //console.log(response);
         if (response.error) {
             alert(response.error)
         } else {
-            location.replace("/login")
+            location.replace("/")
         }
     } catch (error) {
         console.log(error)

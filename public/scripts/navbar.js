@@ -18,10 +18,17 @@ const isOnline = async () => {
             <a class="btn btn-success py-1 px-2 m-1" href="/login">Login</a>
             `;
         } else {
-            selector.innerHTML = `
+            let buttons = `
             <a class="btn btn-success py-1 px-2 m-1" href="/profile">Profile</a>
             <a class="btn btn-success py-1 px-2 m-1" href="/cart">Cart</a>
-            <button class="btn btn-success py-1 px-2 m-1" id="signout">Sign out</button>`;
+            `;
+            const role = response.response.role;
+            if (role === "ADMIN") {
+                buttons += `<a class="btn btn-success py-1 px-2 m-1" href="/add-product">Add Producto</a>
+                            <a class="btn btn-success py-1 px-2 m-1" href="/update-products">Update Producto</a>`
+            }
+            buttons += `<button class="btn btn-success py-1 px-2 m-1" id="signout">Sign out</button>`
+            selector.innerHTML = buttons;
         document.querySelector("#signout").addEventListener("click", async () => {
             try {
                 const opts = {
@@ -41,7 +48,7 @@ const isOnline = async () => {
         }
         
     } catch (error) {
-        console.log(error);
+        
     }
 };
 

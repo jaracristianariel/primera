@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const createToken = (data) => {
+const createToken = (data, expiresIn = 7 * 24 * 60 * 60 ) => {
     try {
         const token = jwt.sign(
             //informacion a tokenizar
@@ -8,7 +8,7 @@ const createToken = (data) => {
             //clave secreta para encriptar
             process.env.SECRET,
             //objeto de configuracion de la firma
-            { expiresIn: 7 * 24 * 60 * 60 }
+            { expiresIn }
         )
         return token
     } catch (error) {

@@ -1,4 +1,4 @@
-import { usersManager } from "../data/managers/mongo/manager.mongo.js";
+import { usersRepository } from "../repositories/repository.js";
 import { verifyToken } from "../helpers/token.hepler.js";
 
 const setupPolicies = (policies) => async (req, res, next) => {
@@ -7,7 +7,6 @@ const setupPolicies = (policies) => async (req, res, next) => {
         if (!Array.isArray(policies)){
             throw Error("policies must be an array")
         }
-        //console.log(policies)
         if (policies.includes("PUBLIC")) return next();
         const token = req?.cookies?.token;
         if (!token) return res.json401();
@@ -18,8 +17,8 @@ const setupPolicies = (policies) => async (req, res, next) => {
             USER: policies.includes("USER"),
             ADMIN: policies.includes("ADMIN")
         }
-        if (!allowedRoles[role]) return json401();
-        const user = await usersManager.readById(user_id);
+        if (!allowedRoles[role]) return res.json401();
+        const user = await usersRepository.readById(user_id);
         req.user = user;
         next();
     } catch (error) {

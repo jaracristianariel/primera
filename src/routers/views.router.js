@@ -1,34 +1,6 @@
 import RouterHepler from "../helpers/router.hepler.js";
-import { productsManager } from "../data/managers/mongo/manager.mongo.js";
-
-
-const indexView = async (req, res) => {
-        const products = await productsManager.readAll()
-        res.status(200).render("index", { products })
-}
-const registerView = async (req, res) => {
-        res.status(200).render("register");
-}
-const loginView = async (req, res) => {
-        res.status(200).render("login");
-}
-const detailsView = async (req, res) => {
-        const { pid } = req.params;
-        const product = await productsManager.readById(pid)
-        res.status(200).render("details", { product });
-}
-const profileView = async (req, res) => {
-        const { user } = req;
-        res.status(200).render("profile", { user });
-}
-const updateView = async (req, res) => {
-        res.status(200).render("update-user");
-}
-
-const currentView = async (req, res) => {
-        const { user } = req;
-        res.status(200).render("current", { user });
-}
+import { indexView, registerView, loginView, detailsView, profileView, updateView, verifyView, resetView, forgotView, addProductView, checkoutSuccessView, updateProductsView} from "../controllers/views.controller.js";
+import { getCart } from "../controllers/carts.controller.js";
 
 class ViewsRouter extends RouterHepler {
         constructor() {
@@ -42,7 +14,13 @@ class ViewsRouter extends RouterHepler {
                 this.render("/details/:pid", ["PUBLIC"], detailsView);
                 this.render("/profile", ["USER", "ADMIN"], profileView);
                 this.render("/update-user", ["USER", "ADMIN"], updateView);
-                this.render("/sessions/current", ["ADMIN"], currentView)
+                this.render("/verify/:email", ["PUBLIC"],verifyView);
+                this.render("/add-product", ["ADMIN"], addProductView);
+                this.render("/checkout-success", ["USER"], checkoutSuccessView)
+                this.render("/cart", ["USER", "ADMIN"], getCart)
+                this.render("/update-products", ["ADMIN"], updateProductsView)
+                this.render("/forgot", ["PUBLIC"], forgotView);
+                this.render("/reset/:email", ["PUBLIC"], resetView);
         }
 }
 
