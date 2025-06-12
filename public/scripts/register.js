@@ -19,6 +19,7 @@ document.querySelector("#register").addEventListener("click", async () => {
         if (response.error) {
             alert(response.error)
         } else {
+            alert("se le ha enviado un correo de verificacion")
             location.replace("/login")
         }
     } catch (error) {
