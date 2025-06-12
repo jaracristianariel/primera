@@ -2,7 +2,7 @@ import { transport } from "./email.helper.js";
 
 const resetPass = async(email, token) => {
     try {
-        const resetLink = `http://localhost:8000/reset/${token}`
+        const resetLink = `${process.env.BASE_URL}/reset/${token}`
         await transport.sendMail({
             from: process.env.GOOGLE_EMAIL,
             to: email,
