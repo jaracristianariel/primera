@@ -7,7 +7,7 @@ const verifyEmail = async(email, verifyCode) => {
             to: email,
             subject: "mail de verificacion de cuenta",
             html: `<h1>codigo de verificacion: ${verifyCode}</h1>
-            <a href="http://localhost:8000/verify/${email}">VERIFICAR!</a>`,
+            <a href="${process.env.BASE_URL}/verify/${email}">VERIFICAR!</a>`,
         })
     } catch (error) {
         throw error
