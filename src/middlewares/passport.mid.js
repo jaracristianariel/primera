@@ -7,7 +7,8 @@ import { usersRepository } from "../repositories/repository.js";
 import { createToken } from "../helpers/token.hepler.js";
 import verifyEmail from "../helpers/verifyEmail.helper.js";
 
-const callbackURL = "http://localhost:8000/api/auth/google/redirect"
+const callbackURL = `${process.env.BASE_URL}/api/auth/google/redirect`
+//onst callbackURL = "http://localhost:8000/api/auth/google/redirect"
 
 passport.use(
     //nombre de la estrategia de autenticacion/autorizacion
